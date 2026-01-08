@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: "Poppins", sans-serif;
+  background:#191c29;
+  color:#fff;
+
+  min-height:100vh;
+  padding: 70px 20px 90px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 90px;
+}
+
+/* =========================
+   TOP: 2 PROJECT CARDS (3D)
+========================= */
+.cards-section{
+  width: 100%;
+  max-width: 1200px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap: 100px;
+}
+
+.cards-section a{ text-decoration:none; }
+
+.card{
+  width: 260px;   /* шире */
+  height: 380px;  /* выше */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 36px;
+  perspective: 2500px;
+}
+
+.cover-image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wrapper{
+  transition: all 0.5s;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+
+.card:hover .wrapper{
+  transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+  box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+}
+
+.wrapper::before,
+.wrapper::after{
+  content: "";
+  opacity: 0;
+  width: 100%;
+  height: 80px;
+  transition: all 0.5s;
+  position: absolute;
+  left: 0;
+}
+
+.wrapper::before{
+  top: 0;
+  height: 100%;
+  background-image: linear-gradient(to top, transparent 46%,rgba(12, 13, 19, 0.5) 68%, rgba(12, 13, 19) 97%);
+}
+
+.wrapper::after{
+  bottom: 0;
+  opacity: 1;
+  background-image: linear-gradient(to bottom,transparent 46%, rgba(12, 13, 19, 0.5) 68%, rgba(12, 13, 19) 97%);
+}
+
+.card:hover .wrapper::before,
+.wrapper::after{
+  opacity: 1;
+}
+
+.card:hover .wrapper::after{
+  height: 120px;
+}
+
+.title{
+  width: 100%;
+  transition: transform 0.5s;
+}
+
+.card:hover .title{
+  transform: translate3d(0%, -50px, 100px);
+}
+
+.character{
+  width: 100%;
+  opacity: 0;
+  transition: all 0.5s;
+  position: absolute;
+  z-index: -1;
+}
+
+.card:hover .character{
+  opacity: 1;
+  transform: translate3d(0%, -30%, 100px);
+}
+
+/* =========================
+   CONTACT (login-style hover)
+========================= */
+
+/* Градиент-угол */
+@property --a{
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.contact-section{
+  width: 100%;
+  display:flex;
+  justify-content:center;
+}
+
+/* внешняя коробка */
+.contact-box{
+  width: 560px;     /* шире */
+  height: 220px;
+  background: repeating-conic-gradient(
+    from var(--a),
+    #ff2770 0%, #ff2770 5%,
+    transparent 5%, transparent 40%,
+    #ff2770 50%
+  );
+  filter: drop-shadow(0 15px 50px #000);
+  border-radius: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: rotating 4s linear infinite;
+  transition: 0.5s ease;
+}
+
+.contact-box:hover{
+  width: 640px;     /* раскрытый — широкий */
+  height: 560px;
+}
+
+@keyframes rotating{
+  0%{ --a: 0deg; }
+  100%{ --a: 360deg; }
+}
+
+.contact-box::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: repeating-conic-gradient(
+    from var(--a),
+    #45f3ff 0%, #45f3ff 5%,
+    transparent 5%, transparent 40%,
+    #45f3ff 50%
+  );
+  animation: rotating 4s linear infinite;
+  animation-delay: -1s;
+}
+
+.contact-box::after{
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: #2d2d39;
+  border-radius: 15px;
+  border: 8px solid #191c29;
+}
+
+/* внутренняя панель */
+.contact-inner{
+  position: absolute;
+  inset: 60px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.2);
+  box-shadow: inset 0 10px 20px rgba(0,0,0,0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  z-index: 10;
+  overflow: hidden;
+  transition: 0.5s ease;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 22px;
+}
+
+.contact-box:hover .contact-inner{
+  inset: 40px;
+}
+
+/* form */
+.contact-form{
+  width: 80%;
+  margin: 0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 16px;
+}
+
+/* title always visible */
+.contact-title{
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-align:center;
+  font-size: 1.05em;
+  margin: 0 auto;
+}
+
+.contact-title i{
+  color: #ff2770;
+  text-shadow: 0 0 5px #ff2770, 0 0 25px #ff2770;
+}
+
+/* fields hidden in CLOSED */
+.contact-fields{
+  width: 100%;
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+  align-items:center;
+
+  transform: translateY(240px);
+  transition: 0.5s ease;
+}
+
+.contact-box:hover .contact-fields{
+  transform: translateY(0);
+}
+
+.contact-fields input,
+.contact-fields textarea{
+  width: 100%;
+  padding: 10px 20px;
+  outline: none;
+  border: 2px solid #fff;
+  font-size: 1em;
+  color: #fff;
+  background: rgba(0,0,0,0.1);
+  border-radius: 30px;
+}
+
+.contact-fields textarea{
+  border-radius: 18px;
+  min-height: 120px;
+  resize: none;
+}
+
+.contact-fields input::placeholder,
+.contact-fields textarea::placeholder{
+  color: #999;
+}
+
+.contact-fields button{
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  background: #45f3ff;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.contact-fields button:hover{
+  box-shadow: 0 0 10px #45f3ff, 0 0 60px #45f3ff;
+}
+
+.status{
+  min-height: 18px;
+  font-size: 0.85em;
+  color: #bffcff;
+  text-align:center;
+}
+
+/* Responsive */
+@media (max-width: 520px){
+  .contact-box{ width: 92vw; }
+  .contact-box:hover{ width: 92vw; }
+  .cards-section{ gap: 60px; }
+}
