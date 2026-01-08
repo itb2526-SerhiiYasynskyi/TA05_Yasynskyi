@@ -298,15 +298,29 @@ body{
   text-align:center;
 }
 
-
-
-@media (max-width: 600px){
+/* FORCE 2 CARDS SIDE-BY-SIDE ON MOBILE */
+@media (max-width: 600px) {
   .cards-section{
-    gap: 20px;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-auto-rows: auto !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-items: center !important;
+    align-items: start !important;
+  }
+
+  .cards-section a{
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
   }
 
   .card{
-    width: 160px;   /* уменьшаем, чтобы влезли */
-    height: 260px;
+    width: 44vw !important;   /* 2 карточки влезают */
+    height: 62vw !important;  /* пропорции */
+    margin: 0 !important;
+    padding: 0 14px !important;
   }
 }
