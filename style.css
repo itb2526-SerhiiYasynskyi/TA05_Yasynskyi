@@ -26,10 +26,10 @@ body{
 .cards-section{
   width: 100%;
   max-width: 1200px;
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap: 100px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ВСЕГДА 2 КОЛОНКИ */
+  gap: 40px;
+  justify-items: center;
 }
 
 .cards-section a{ text-decoration:none; }
@@ -303,4 +303,15 @@ body{
   .contact-box{ width: 92vw; }
   .contact-box:hover{ width: 92vw; }
   .cards-section{ gap: 60px; }
+}
+
+@media (max-width: 600px){
+  .cards-section{
+    gap: 20px;
+  }
+
+  .card{
+    width: 160px;   /* уменьшаем, чтобы влезли */
+    height: 260px;
+  }
 }
