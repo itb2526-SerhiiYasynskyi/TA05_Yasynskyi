@@ -25,18 +25,20 @@ body{
 ========================= */
 .cards-section{
   width: 100%;
-  max-width: 1200px;
+  max-width: 1300px;          /* ОЧЕНЬ ШИРОКО */
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* ВСЕГДА 2 КОЛОНКИ */
-  gap: 40px;
+  grid-template-columns: 1fr 1fr;
   justify-items: center;
+  align-items: start;
+  margin: 0 auto;
 }
+
 
 .cards-section a{ text-decoration:none; }
 
 .card{
-  width: 260px;   /* шире */
-  height: 380px;  /* выше */
+  width: 480px;    /* было меньше */
+  height: 760px;   /* выше */
   position: relative;
   display: flex;
   justify-content: center;
@@ -298,29 +300,16 @@ body{
   text-align:center;
 }
 
-/* FORCE 2 CARDS SIDE-BY-SIDE ON MOBILE */
-@media (max-width: 600px) {
+@media (max-width: 700px){
   .cards-section{
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-auto-rows: auto !important;
-    gap: 12px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    justify-items: center !important;
-    align-items: start !important;
-  }
-
-  .cards-section a{
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
+    max-width: 100%;
+    column-gap: 16px;     /* компактно */
+    padding: 0 8px;
   }
 
   .card{
-    width: 44vw !important;   /* 2 карточки влезают */
-    height: 62vw !important;  /* пропорции */
-    margin: 0 !important;
-    padding: 0 14px !important;
+    width: 44vw;
+    height: 64vw;
   }
 }
+
