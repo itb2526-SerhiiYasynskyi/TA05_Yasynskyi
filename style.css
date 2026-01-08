@@ -298,12 +298,7 @@ body{
   text-align:center;
 }
 
-/* Responsive */
-@media (max-width: 520px){
-  .contact-box{ width: 92vw; }
-  .contact-box:hover{ width: 92vw; }
-  .cards-section{ gap: 60px; }
-}
+
 
 @media (max-width: 600px){
   .cards-section{
