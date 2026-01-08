@@ -257,3 +257,5 @@ https://templatemo.com/tm-599-noir-fashion
         document.querySelectorAll('.featured-container, .contact-content').forEach(el => {
             observer.observe(el);
         });
+
+

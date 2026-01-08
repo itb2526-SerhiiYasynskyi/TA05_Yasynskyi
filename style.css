@@ -25,11 +25,12 @@ body{
 ========================= */
 .cards-section{
   width: 100%;
-  max-width: 1300px;          /* ОЧЕНЬ ШИРОКО */
+  max-width: 1100px;          /* ОЧЕНЬ ШИРОКО */
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   align-items: start;
+  column-gap: 80px;
   margin: 0 auto;
 }
 
@@ -37,14 +38,14 @@ body{
 .cards-section a{ text-decoration:none; }
 
 .card{
-  width: 480px;    /* было меньше */
-  height: 760px;   /* выше */
+  width: 380px;    /* было меньше */
+  height: 550px;   /* выше */
   position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   padding: 0 36px;
-  perspective: 2500px;
+  perspective: 1500px;
 }
 
 .cover-image{
@@ -116,7 +117,7 @@ body{
 
 .card:hover .character{
   opacity: 1;
-  transform: translate3d(0%, -30%, 100px);
+  transform: translate3d(0%, -20%, 100px);
 }
 
 /* =========================
