@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,55 +18,82 @@
 </head>
 
 <body>
+  <!-- BACKGROUND PARTICLES -->
+  <div id="particle-canvas"></div>
 
-  <!-- TOP: 2 PROJECT CARDS -->
-  <section class="cards-section">
-    <a href="https://www.mythrillfiction.com/the-dark-rider" target="_blank" rel="noopener">
-      <div class="card">
-        <div class="wrapper">
-          <img src="images/Hacking.png" class="cover-image" alt="Project 1 cover" />
-        </div>
-        <img src="images/letrahsck.png" class="title" alt="Project 1 title" />
-        <img src="images/fondohack.png" class="character" alt="Project 1 character" />
-      </div>
-    </a>
+  <!-- ВСЁ, ЧТО СВЕРХУ -->
+  <div class="content">
 
-    <a href="https://www.mythrillfiction.com/force-mage" target="_blank" rel="noopener">
-      <div class="card">
-        <div class="wrapper">
-          <img src="images/ciber.png" class="cover-image" alt="Project 2 cover" />
-        </div>
-        <img src="images/textciber.png" class="title" alt="Project 2 title" />
-        <img src="images/fondociber.png" class="character" alt="Project 2 character" />
-      </div>
-    </a>
-  </section>
+  <!-- TOP MENU -->
+  <header class="topbar" id="home">
+    <div class="topbar-inner">
+      <nav class="gooey-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="#home">home</a></li>
+          <li><a href="#projects">projects</a></li>
+        </ul>
 
-  <!-- CONTACT (hover open) -->
-  <section class="contact-section">
-    <div class="contact-box">
-      <div class="contact-inner">
-        <form class="contact-form" id="contactForm">
-          <h2 class="contact-title">
-            <i class="fa-solid fa-paper-plane"></i>
-            Contact Us
-            <i class="fa-solid fa-heart"></i>
-          </h2>
-
-          <div class="contact-fields" aria-hidden="true">
-            <input type="text" name="name" placeholder="Name" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="text" name="subject" placeholder="Subject" required />
-            <textarea name="message" placeholder="Message" required></textarea>
-
-            <button type="submit">Send message</button>
-            <p class="status" id="statusMsg"></p>
-          </div>
-        </form>
-      </div>
+        <!-- gooey effects -->
+      </nav>
+                <span class="effect filter"></span>
+        <span class="effect text">home</span>
     </div>
-  </section>
+  </header>
 
+  <!-- MAIN CONTENT -->
+  <main class="page">
+
+    <!-- TOP: 2 PROJECT CARDS -->
+    <section class="cards-section" id="projects">
+      <a href="https://www.mythrillfiction.com/the-dark-rider" target="_blank" rel="noopener">
+        <div class="card">
+          <div class="wrapper">
+            <img src="images/Hacking.png" class="cover-image" alt="Project 1 cover" />
+          </div>
+          <img src="images/letrahsck.png" class="title" alt="Project 1 title" />
+          <img src="images/fondohack.png" class="character" alt="Project 1 character" />
+        </div>
+      </a>
+
+      <a href="https://www.mythrillfiction.com/force-mage" target="_blank" rel="noopener">
+        <div class="card">
+          <div class="wrapper">
+            <img src="images/ciber.png" class="cover-image" alt="Project 2 cover" />
+          </div>
+          <img src="images/textciber.png" class="title" alt="Project 2 title" />
+          <img src="images/fondociber.png" class="character" alt="Project 2 character" />
+        </div>
+      </a>
+    </section>
+
+    <!-- CONTACT (hover open) -->
+    <section class="contact-section" id="contact">
+      <div class="contact-box">
+        <div class="contact-inner">
+          <form class="contact-form" id="contactForm">
+            <h2 class="contact-title">
+              <i class="fa-solid fa-paper-plane"></i>
+              Contact Us
+              <i class="fa-solid fa-heart"></i>
+            </h2>
+
+            <div class="contact-fields" aria-hidden="true">
+              <input type="text" name="name" placeholder="Name" required />
+              <input type="email" name="email" placeholder="Email" required />
+              <input type="text" name="subject" placeholder="Subject" required />
+              <textarea name="message" placeholder="Message" required></textarea>
+
+              <button type="submit" class="form-submit">Send message</button>
+              <p class="status" id="statusMsg"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script src="particle-network.min.js"></script>
   <script src="script.js"></script>
+  </div>
 </body>
 </html>

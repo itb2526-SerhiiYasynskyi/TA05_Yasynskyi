@@ -1,261 +1,232 @@
-// JavaScript Document
+// script.js
 
-/*
+/* =========================
+   GOOEY NAV (scoped)
+========================= */
+const nav = document.querySelector(".gooey-nav");
+const effectEl = document.querySelector(".effect.filter");
+const textEl = document.querySelector(".effect.text");
 
-TemplateMo 599 Noir Fashion
+let animationTime = 600;
+let pCount = 15;
+const colors = [1, 2, 3, 1, 2, 3, 1, 4];
+const timeVariance = 300;
 
-https://templatemo.com/tm-599-noir-fashion
+function noise(n = 1) {
+  return n / 2 - Math.random() * n;
+}
 
-*/
+function getXY(distance, pointIndex, totalPoints) {
+  const x = distance * Math.cos(((360 + noise(8)) / totalPoints * pointIndex) * Math.PI / 180);
+  const y = distance * Math.sin(((360 + noise(8)) / totalPoints * pointIndex) * Math.PI / 180);
+  return [x, y];
+}
 
- // Hero Carousel
-        const slides = document.querySelectorAll('.carousel-slide');
-        const indicators = document.querySelectorAll('.indicator');
-        let currentSlide = 0;
-        let slideInterval;
+function createParticle(i, t, d, r) {
+  let rotate = noise(r / 10);
+  let minDistance = d[0];
+  let maxDistance = d[1];
 
-        function showSlide(index) {
-            // Remove active class from all slides and indicators
-            slides.forEach(slide => slide.classList.remove('active'));
-            indicators.forEach(indicator => indicator.classList.remove('active'));
-            
-            // Add active class to current slide and indicator
-            slides[index].classList.add('active');
-            indicators[index].classList.add('active');
-            
-            currentSlide = index;
-        }
+  return {
+    start: getXY(minDistance, pCount - i, pCount),
+    end: getXY(maxDistance + noise(7), pCount - i, pCount),
+    time: t,
+    scale: 1 + noise(0.2),
+    color: colors[Math.floor(Math.random() * colors.length)],
+    rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
+  };
+}
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
+function makeParticles($el) {
+  const d = [90, 10];
+  const r = 100;
 
-        function startSlideShow() {
-            slideInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
-        }
+  const bubbleTime = animationTime * 2 + timeVariance;
+  $el.style.setProperty("--time", bubbleTime + "ms");
 
-        function stopSlideShow() {
-            clearInterval(slideInterval);
-        }
+  for (let i = 0; i < pCount; i++) {
+    const t = animationTime * 2 + noise(timeVariance * 2);
+    const p = createParticle(i, t, d, r);
 
-        // Start automatic slideshow
-        if (slides.length > 0) {
-            startSlideShow();
-            
-            // Manual navigation via indicators
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', () => {
-                    stopSlideShow();
-                    showSlide(index);
-                    startSlideShow(); // Restart automatic slideshow
-                });
-            });
+    $el.classList.remove("active");
 
-            // Pause on hover
-            const carousel = document.querySelector('.hero-carousel');
-            if (carousel) {
-                carousel.addEventListener('mouseenter', stopSlideShow);
-                carousel.addEventListener('mouseleave', startSlideShow);
-            }
-        }
+    setTimeout(() => {
+      const $particle = document.createElement("span");
+      const $point = document.createElement("span");
 
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileNav = document.getElementById('mobileNav');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+      $particle.classList.add("particle");
+      $particle.style.cssText = `
+        --start-x: ${p.start[0]}px;
+        --start-y: ${p.start[1]}px;
+        --end-x: ${p.end[0]}px;
+        --end-y: ${p.end[1]}px;
+        --time: ${p.time}ms;
+        --scale: ${p.scale};
+        --color: var(--color-${p.color}, white);
+        --rotate: ${p.rotate}deg;
+      `;
 
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
-            mobileNav.classList.toggle('active');
-        });
+      $point.classList.add("point");
+      $particle.append($point);
+      $el.append($particle);
 
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
-                mobileNav.classList.remove('active');
-            });
-        });
+      requestAnimationFrame(() => {
+        $el.classList.add("active");
+      });
 
-        // Navbar scroll effect and scroll spy
-        const navbar = document.getElementById('navbar');
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
+      setTimeout(() => {
+        try { $el.removeChild($particle); } catch (e) {}
+      }, t);
+    }, 30);
+  }
+}
 
-        function updateActiveNav() {
-            const scrollY = window.pageYOffset;
-            const navHeight = navbar.offsetHeight;
-            
-            // Navbar background on scroll
-            if (scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-            
-            // Scroll spy for active navigation
-            sections.forEach(section => {
-                const sectionHeight = section.offsetHeight;
-                const sectionTop = section.offsetTop - navHeight - 10;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === '#' + sectionId) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-            
-            // Special case for home when at the very top
-            if (scrollY < 100) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === '#home') {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        }
+function updateEffectPosition(element) {
+  if (!effectEl || !textEl) return;
 
-        window.addEventListener('scroll', updateActiveNav);
-        window.addEventListener('resize', updateActiveNav); // Update on resize
-        updateActiveNav(); // Call on load
+  const pos = element.getBoundingClientRect();
+  const styles = {
+    left: `${pos.x}px`,
+    top: `${pos.y}px`,
+    width: `${pos.width}px`,
+    height: `${pos.height}px`
+  };
 
-        // Category filter
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const collectionCards = document.querySelectorAll('.collection-card');
+  Object.assign(effectEl.style, styles);
+  Object.assign(textEl.style, styles);
+  textEl.innerText = element.innerText;
+}
 
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const category = btn.dataset.category;
-                
-                // Update active button
-                tabButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Filter cards
-                collectionCards.forEach(card => {
-                    if (category === 'all' || card.dataset.category === category) {
-                        card.style.display = 'block';
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                            card.style.animation = 'fadeInUp 0.6s ease forwards';
-                        }, 100);
-                    } else {
-                        card.style.opacity = '0';
-                        setTimeout(() => {
-                            card.style.display = 'none';
-                        }, 300);
-                    }
-                });
-            });
-        });
+function setActiveItem(li) {
+  if (!nav || !effectEl || !textEl) return;
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const target = document.querySelector(targetId);
-                
-                if (target) {
-                    // Get navbar height dynamically (it changes on medium screens)
-                    const navHeight = navbar.offsetHeight;
-                    let offsetTop;
-                    
-                    // If scrolling to home, go to top
-                    if (targetId === '#home') {
-                        offsetTop = 0;
-                    } else {
-                        // For all other sections, position them right at the top of viewport
-                        // just below the navbar to completely hide previous content
-                        offsetTop = target.offsetTop - navHeight;
-                    }
-                    
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+  updateEffectPosition(li);
 
-        // Parallax effect on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero-content');
-            if (parallax) {
-                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
+  if (!li.classList.contains("active")) {
+    nav.querySelectorAll("li").forEach(x => x.classList.remove("active"));
+    effectEl.querySelectorAll(".particle").forEach(p => effectEl.removeChild(p));
 
-        // Contact form handling
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                // Get form data
-                const formData = new FormData(contactForm);
-                const data = Object.fromEntries(formData);
-                
-                // Animate submit button
-                const submitBtn = contactForm.querySelector('.form-submit');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Sending...';
-                submitBtn.style.opacity = '0.7';
-                submitBtn.disabled = true;
-                
-                // Simulate sending (replace with actual API call)
-                setTimeout(() => {
-                    submitBtn.textContent = 'Message Sent! ✓';
-                    submitBtn.style.background = '#4CAF50';
-                    
-                    // Reset form
-                    contactForm.reset();
-                    
-                    // Reset button after delay
-                    setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.style.background = '';
-                        submitBtn.style.opacity = '';
-                        submitBtn.disabled = false;
-                    }, 3000);
-                }, 1500);
-            });
-        }
+    li.classList.add("active");
+    textEl.classList.remove("active");
 
-        // Form input animations
-        const formInputs = document.querySelectorAll('.form-group input, .form-group textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.style.transform = 'translateY(-2px)';
-            });
-            input.addEventListener('blur', () => {
-                input.parentElement.style.transform = '';
-            });
-        });
+    setTimeout(() => textEl.classList.add("active"), 100);
+    makeParticles(effectEl);
+  }
+}
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+if (nav) {
+  nav.querySelectorAll("li").forEach((li) => {
+    const link = li.querySelector("a");
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+    li.addEventListener("click", () => setActiveItem(li));
 
-        document.querySelectorAll('.featured-container, .contact-content').forEach(el => {
-            observer.observe(el);
-        });
+    link?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setActiveItem(li);
+      }
+    });
+  });
 
+  const resizeObserver = new ResizeObserver(() => {
+    const activeEl = nav.querySelector("li.active");
+    if (activeEl) updateEffectPosition(activeEl);
+  });
+  resizeObserver.observe(document.body);
+
+  // initial
+  setTimeout(() => {
+    const first = nav.querySelector("li");
+    if (first) setActiveItem(first);
+  }, 200);
+}
+
+/* =========================
+   SMOOTH SCROLL for menu anchors
+========================= */
+document.querySelectorAll('.gooey-nav a[href^="#"]').forEach(a => {
+  a.addEventListener("click", (e) => {
+    const id = a.getAttribute("href");
+    const target = document.querySelector(id);
+    if (!target) return;
+
+    e.preventDefault();
+
+    const headerOffset = 110; // fixed menu height
+    const y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+
+    window.scrollTo({ top: y < 0 ? 0 : y, behavior: "smooth" });
+  });
+});
+
+/* =========================
+   CONTACT FORM (simple)
+========================= */
+const contactForm = document.getElementById("contactForm");
+const statusMsg = document.getElementById("statusMsg");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const submitBtn = contactForm.querySelector(".form-submit");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = "0.7";
+      submitBtn.textContent = "Sending...";
+    }
+
+    if (statusMsg) statusMsg.textContent = "";
+
+    // fake send (замени на реальный fetch позже)
+    setTimeout(() => {
+      if (statusMsg) statusMsg.textContent = "Message Sent! ✓";
+      contactForm.reset();
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "";
+        submitBtn.textContent = "Send message";
+      }
+    }, 900);
+  });
+}
+window.addEventListener("load", () => {
+  const canvasDiv = document.getElementById("particle-canvas");
+  if (!canvasDiv || typeof ParticleNetwork === "undefined") return;
+
+  // Сделать контейнер точно размером экрана
+  canvasDiv.style.width = window.innerWidth + "px";
+  canvasDiv.style.height = window.innerHeight + "px";
+
+  const options = {
+    particleColor: "#ffffff",
+    background: "#191c29",
+    interactive: true,
+    speed: "medium",
+    density: 12000 // важное: ставим числом (равномернее)
+  };
+
+  new ParticleNetwork(canvasDiv, options);
+
+  // Форсим canvas на весь экран
+  const canvas = canvasDiv.querySelector("canvas");
+  if (canvas) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+  }
+
+  // И при resize тоже
+  window.addEventListener("resize", () => {
+    canvasDiv.style.width = window.innerWidth + "px";
+    canvasDiv.style.height = window.innerHeight + "px";
+    const c = canvasDiv.querySelector("canvas");
+    if (c) {
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+    }
+  });
+});
 

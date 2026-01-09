@@ -1,4 +1,23 @@
+/* style.css */
 @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+/* =========================
+   BASE
+========================= */
+:root{
+  --linear-ease: linear(
+    0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245, 1.27 15.8%,
+    1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949, 0.928 33.3%,
+    0.926, 0.933 36.8%, 1.001 45.6%, 1.013, 1.019 50.8%, 1.018 54.4%,
+    1 63.1%, 0.995 68%, 1.001 85%, 1
+  );
+
+  /* optional particle colors (used by gooey nav) */
+  --color-1: #ffffff;
+  --color-2: #45f3ff;
+  --color-3: #ff2770;
+  --color-4: #bffcff;
+}
 
 *{
   margin: 0;
@@ -6,14 +25,17 @@
   box-sizing: border-box;
 }
 
+
 body{
   font-family: "Poppins", sans-serif;
   background:#191c29;
   color:#fff;
+}
 
-  min-height:100vh;
-  padding: 70px 20px 90px;
-
+/* layout wrapper */
+.page{
+  min-height: 100vh;
+  padding: 120px 20px 90px; /* space for fixed nav */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -21,11 +43,272 @@ body{
 }
 
 /* =========================
+   TOP BAR + GOOEY NAV
+========================= */
+.topbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  padding: 18px 18px 0;
+  pointer-events: none; /* allow effects; nav will re-enable */
+}
+
+.topbar-inner{
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px; /* отступ от правого края */
+}
+
+.gooey-nav{
+  pointer-events: auto;
+  display: flex;
+  position: relative;
+  transform: translate3d(0, 0, 0.01px);
+  opacity: 0.999;
+  background: hsl(205deg 0% 0% / 0.1);
+  backdrop-filter: blur(9px) brightness(1.1);
+  border-radius: 100vw;
+  padding: 0.4em;
+  box-shadow:
+    0 4px 20px hsl(205deg 50% 30% / 0.15),
+    0 4px 10px hsl(205deg 30% 10% / 0.075),
+    inset 0 -4px 15px 6px hsl(205deg 70% 90% / 0.2),
+    inset 0 -2px 5px hsl(205deg 70% 90% / 0.15),
+    inset 0 -1px 1px hsl(205deg 70% 90% / 0.4),
+    inset 0 10px 15px hsl(205deg 30% 10% / 0.2),
+    inset 0 1px 2px hsl(205deg 70% 90% / 0.3);
+}
+
+/* noise layer 1 */
+.gooey-nav::before{
+  content: "";
+  inset: 0;
+  position: absolute;
+  mask-image: url(https://assets.codepen.io/13471/nnnoise%281%29.png);
+  mask-mode: luminance;
+  mask-repeat: repeat;
+  mask-size: 55%;
+  border-radius: 100vw;
+  z-index: 1;
+  backdrop-filter: blur(7px) brightness(1.05);
+  background: hsl(205deg 0% 100% / 0.1);
+}
+
+/* noise layer 2 */
+.gooey-nav::after{
+  content: "";
+  inset: 0;
+  position: absolute;
+  mask-image: url(https://assets.codepen.io/13471/nnnoise%281%29.png);
+  mask-mode: luminance;
+  mask-size: 50%;
+  mask-repeat: repeat;
+  border-radius: 100vw;
+  z-index: 2;
+  backdrop-filter: blur(5px) brightness(0.95);
+  box-shadow:
+    inset 0 -4px 15px 5px hsl(205deg 70% 90% / 0.3),
+    inset 0 -2px 5px hsl(205deg 70% 90% / 0.15),
+    inset 0 -1px 1px hsl(205deg 70% 90% / 0.4),
+    inset 0 1px 2px hsl(205deg 70% 90% / 0.3);
+  background: hsl(205deg 0% 20% / 0.05);
+}
+
+/* nav list */
+.gooey-nav ul{
+  display: flex;
+  gap: 4em;
+  list-style: none;
+  padding: 0 1em;
+  margin: 0;
+  position: relative;
+  z-index: 3;
+  color: white;
+  text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
+}
+
+.gooey-nav a,
+.gooey-nav a:hover,
+.gooey-nav a:active,
+.gooey-nav a:focus{
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+/* items */
+.gooey-nav ul li{
+  padding: 0.6em 1em;
+  border-radius: 100vw;
+  position: relative;
+  transition: all 1.8s var(--linear-ease) 0.2s, box-shadow 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 0.5px 1.5px transparent;
+}
+
+.gooey-nav ul li:focus-within{
+  box-shadow: 0 0 0.5px 1.5px white;
+}
+
+.gooey-nav ul li::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 100vw;
+  background: white;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 2s var(--linear-ease) 0.2s;
+  z-index: -1;
+}
+
+.gooey-nav ul li.active{
+  color: black;
+  text-shadow: none;
+}
+
+.gooey-nav ul li.active::after{
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* effects */
+.effect{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0px;
+  height: 0px;
+  opacity: 1;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+
+.effect.text{
+  color: white;
+  z-index: 3;
+  transition: color 0s ease;
+}
+
+.effect.text.active{
+  color: black;
+  transition: color 1.8s var(--linear-ease) 0.2s;
+}
+
+.effect.filter{
+  filter: blur(7px) contrast(20);
+  mix-blend-mode: normal; /* вместо lighten */
+}
+
+
+.effect.filter::before{
+  content: "";
+  position: absolute;
+  inset: -75px;
+  z-index: -2;
+  background: transparent; /* было black */
+}
+
+.effect.filter::after{
+  content: "";
+  position: absolute;
+  inset: 0px;
+  background: white;
+  transform: scale(0);
+  opacity: 0;
+  z-index: -1;
+  border-radius: 100vw;
+}
+
+
+.effect.active::after{
+  animation: pill 2s var(--linear-ease) 0.2s both;
+}
+
+.particle,
+.point{
+  display: block;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  transform-origin: center;
+}
+
+.particle{
+  position: absolute;
+  top: calc(50% - 8px);
+  left: calc(50% - 8px);
+  animation: particle var(--time) ease 1 -350ms;
+}
+
+.point{
+  background: var(--color);
+  opacity: 1;
+  animation: point var(--time) ease 1 -350ms;
+}
+
+@keyframes particle{
+  0%{
+    transform: rotate(0deg) translate(calc(var(--start-x) * 1), calc(var(--start-y) * 1));
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  70%{
+    transform: rotate(calc(var(--rotate) * 0.5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2));
+    opacity: 1;
+    animation-timing-function: ease;
+  }
+  85%{
+    transform: rotate(calc(var(--rotate) * 0.66)) translate(calc(var(--end-x) * 1), calc(var(--end-y) * 1));
+    opacity: 1;
+  }
+  100%{
+    transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5));
+    opacity: 1;
+  }
+}
+
+@keyframes point{
+  0%{
+    transform: scale(0);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  25%{ transform: scale(calc(var(--scale) * 0.25)); }
+  38%{ opacity: 1; }
+  65%{
+    transform: scale(var(--scale));
+    opacity: 1;
+    animation-timing-function: ease;
+  }
+  85%{
+    transform: scale(var(--scale));
+    opacity: 1;
+  }
+  100%{
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes pill{
+  to{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================
    TOP: 2 PROJECT CARDS (3D)
 ========================= */
 .cards-section{
   width: 100%;
-  max-width: 1100px;          /* ОЧЕНЬ ШИРОКО */
+  max-width: 1100px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
@@ -34,12 +317,11 @@ body{
   margin: 0 auto;
 }
 
-
 .cards-section a{ text-decoration:none; }
 
 .card{
-  width: 380px;    /* было меньше */
-  height: 550px;   /* выше */
+  width: 380px;
+  height: 550px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -121,10 +403,8 @@ body{
 }
 
 /* =========================
-   CONTACT (login-style hover)
+   CONTACT (hover open)
 ========================= */
-
-/* Градиент-угол */
 @property --a{
   syntax: "<angle>";
   inherits: false;
@@ -137,9 +417,8 @@ body{
   justify-content:center;
 }
 
-/* внешняя коробка */
 .contact-box{
-  width: 560px;     /* шире */
+  width: 560px;
   height: 220px;
   background: repeating-conic-gradient(
     from var(--a),
@@ -156,10 +435,11 @@ body{
 
   animation: rotating 4s linear infinite;
   transition: 0.5s ease;
+  position: relative;
 }
 
 .contact-box:hover{
-  width: 640px;     /* раскрытый — широкий */
+  width: 640px;
   height: 560px;
 }
 
@@ -192,7 +472,6 @@ body{
   border: 8px solid #191c29;
 }
 
-/* внутренняя панель */
 .contact-inner{
   position: absolute;
   inset: 60px;
@@ -214,7 +493,6 @@ body{
   inset: 40px;
 }
 
-/* form */
 .contact-form{
   width: 80%;
   margin: 0 auto;
@@ -224,7 +502,6 @@ body{
   gap: 16px;
 }
 
-/* title always visible */
 .contact-title{
   text-transform: uppercase;
   font-weight: 600;
@@ -239,7 +516,6 @@ body{
   text-shadow: 0 0 5px #ff2770, 0 0 25px #ff2770;
 }
 
-/* fields hidden in CLOSED */
 .contact-fields{
   width: 100%;
   display:flex;
@@ -301,10 +577,15 @@ body{
   text-align:center;
 }
 
+/* responsive */
+@media (max-width: 900px){
+  .gooey-nav ul{ gap: 2em; }
+}
+
 @media (max-width: 700px){
   .cards-section{
     max-width: 100%;
-    column-gap: 16px;     /* компактно */
+    column-gap: 16px;
     padding: 0 8px;
   }
 
@@ -312,5 +593,79 @@ body{
     width: 44vw;
     height: 64vw;
   }
+
+  .contact-box{
+    width: 92%;
+  }
+  .contact-box:hover{
+    width: 92%;
+  }
 }
+/* ===== WANT ripple + only white particles + no text outlines ===== */
+
+/* 1) убрать контур вокруг текста при клике/фокусе */
+.gooey-nav a,
+.gooey-nav a:focus,
+.gooey-nav a:focus-visible,
+.gooey-nav a:active{
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* убрать белую обводку "focus-within" на li */
+.gooey-nav ul li,
+.gooey-nav ul li:focus-within{
+  box-shadow: none !important;
+}
+
+/* 2) волна (пилюля) — оставить включенной */
+.effect.filter{
+  mix-blend-mode: normal !important;   /* чтобы не было цветных грязных пятен */
+  filter: blur(7px) contrast(20) blur(0) !important;
+}
+
+/* убрать чёрный ореол вокруг эффекта */
+.effect.filter::before{
+  background: transparent !important;
+}
+
+/* 3) точки только белые */
+.point{
+  background: #fff !important;
+}
+/* ===== PARTICLE BACKGROUND (fixed) ===== */
+html, body{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* скролл по Y оставляем */
+}
+
+/* фон с частицами */
+html, body { height: 100%; margin: 0; }
+
+#particle-canvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0 !important;
+}
+
+#particle-canvas canvas{
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+.content{ position: relative; z-index: 10; }
 
