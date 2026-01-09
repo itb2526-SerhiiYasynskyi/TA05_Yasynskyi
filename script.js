@@ -135,11 +135,14 @@ if (nav) {
   resizeObserver.observe(document.body);
 
   // initial
-  setTimeout(() => {
-    const first = nav.querySelector("li");
-    if (first) setActiveItem(first);
-  }, 200);
-}
+setTimeout(() => {
+  const first = nav.querySelector("li");
+  if (first) setActiveItem(first);
+
+  // включаем эффекты только после позиционирования
+  document.body.classList.add("js-ready");
+}, 200);
+
 
 /* =========================
    SMOOTH SCROLL for menu anchors

@@ -714,4 +714,17 @@ html, body { height: 100%; margin: 0; }
   .gooey-nav ul li{
     padding: 0.45em 0.75em;
   }
+
+}
+/* 1) УБИРАЕМ текстовый слой эффекта (он и даёт "двойные слова") */
+.effect.text{
+  display: none !important;
+}
+/* 2) Скрываем эффекты, пока JS не готов (чтобы не мигало "home") */
+.effect{
+  opacity: 0;
+}
+
+body.js-ready .effect{
+  opacity: 1;
 }
