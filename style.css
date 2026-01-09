@@ -583,22 +583,35 @@ body{
 }
 
 @media (max-width: 700px){
+
+  /* чтобы сетка не вылезала */
   .cards-section{
+    width: 100%;
     max-width: 100%;
-    column-gap: 16px;
-    padding: 0 8px;
+    padding: 0 12px;                 /* отступы от краёв */
+    grid-template-columns: 1fr 1fr;  /* 2 в ряд */
+    column-gap: 12px;                /* меньше разрыв */
+    justify-items: stretch;          /* растягиваем по ячейке */
   }
 
+  /* карточка занимает всю ширину своей колонки */
   .card{
-    width: 44vw;
-    height: 64vw;
+    width: 100%;
+    max-width: 100%;
+    height: 58vw;                    /* норм высота для 2 в ряд */
+    padding: 0 12px;                 /* уменьшили внутренние отступы */
   }
+
+  /* на всякий случай — ничего не вылазит вправо */
+  html, body{ overflow-x: hidden; }
+}
+
 
   .contact-box{
-    width: 92%;
+    width: 52%;
   }
   .contact-box:hover{
-    width: 92%;
+    width: 52%;
   }
 }
 /* ===== WANT ripple + only white particles + no text outlines ===== */
