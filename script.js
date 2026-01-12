@@ -134,12 +134,28 @@ if (nav) {
   });
   resizeObserver.observe(document.body);
 
-  // initial
-  setTimeout(() => {
-    const first = nav.querySelector("li");
-    if (first) setActiveItem(first);
-  }, 200);
+// initial (НЕ ставим home всегда)
+setTimeout(() => {
+  // 1) если в HTML уже есть li.active — используем его
+  let initial = nav.querySelector("li.active");
+
+  // 2) если нет active — пробуем по текущему URL
+  if (!initial) {
+    const current = location.pathname.split("/").pop(); // index.html
+    initial = [...nav.querySelectorAll("li")].find(li => {
+      const href = li.querySelector("a")?.getAttribute("href") || "";
+      return href.endsWith(current);
+    });
+  }
+
+  // 3) запасной вариант
+  if (!initial) initial = nav.querySelector("li");
+
+  if (initial) setActiveItem(initial);
+}, 50);
+
 }
+
 
 /* =========================
    SMOOTH SCROLL for menu anchors
